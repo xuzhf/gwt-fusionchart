@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="chartfusion" default="all" basedir=".">
+		
+	<target name="clean">
+		<delete dir="output"/>
+	</target>
+		
+	<target name="compile">
+		<mkdir dir="output/build"/>
+		<javac srcdir="src" destdir="output/build" debug="on" includes="**/*.java">
+			<classpath>
+				<pathelement location="lib/fusionchart_api.jar"/>
+				<pathelement location="lib/servlet-2_4.jar"/>
+				<pathelement location="lib/gwt-user.jar"/>
+			</classpath>
+		</javac>
+	</target>
+	<target name="jar" depends="compile">
+		<jar jarfile="output/fusionchart_server.jar" 
+            	basedir="output/build"
+            	includes="**/*.class">
+            <fileset dir="src" includes="**/*.java"/>
+        </jar>
+	</target>
+	<target name="zip">
+		<mkdir dir="output"/>
+		<zip zipFile="output/fusionchart_server.zip"
+            		basedir="${basedir}" excludes="**">
+            		<zipfileset dir="${basedir}" prefix="fusionchart_api"
+				includes="**/*" excludes="output/**"/>
+        	</zip>
+	</target>
+	<target name="all" depends="jar, zip"/>
+</project>
