@@ -1,17 +1,16 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.google.code</groupId>
     <artifactId>fusionchart_parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
     <name>Fusion Chart</name>
     <url>http://code.google.com/p/gwt-fusionchart/</url>
     <description>his project provides a set of tools for using the FusionChart? product inside a GWT application.
     </description>
 
     <scm>
-        <connection>scm:svn:http://gwt-fusionchart.googlecode.com/svn/trunk/</connection>
+        <connection>scm:svn:http://gwt-fusionchart.googlecode.com/svn/tags/fusionchart_parent-1.0.1</connection>
     </scm>
 
     <repositories>
