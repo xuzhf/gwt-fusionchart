@@ -13,7 +13,7 @@
     </description>
 
     <scm>
-        <connection>scm:svn:https://gwt-fusionchart.googlecode.com/svn/tags/fusionchart_parent-1.0.1/fusionchart_api</connection>
+        <connection>scm:svn:https://gwt-fusionchart.googlecode.com/svn/trunk/fusionchart_api</connection>
     </scm>
 
     <dependencies>
