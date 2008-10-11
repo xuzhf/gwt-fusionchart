@@ -1,0 +1,32 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.google.code</groupId>
+        <artifactId>fusionchart_parent</artifactId>
+        <version>1.0.3</version>
+    </parent>
+    <artifactId>fusionchart_api</artifactId>
+    <packaging>jar</packaging>
+    <name>Fusion Chart API</name>
+    <url>http://code.google.com/p/gwt-fusionchart/</url>
+    <description>This project provides a set of tools for using the FusionChart product inside a GWT application.
+    </description>
+
+    <scm>
+        <connection>scm:svn:https://gwt-fusionchart.googlecode.com/svn/tags/fusionchart_parent-1.0.3/fusionchart_api</connection>
+    </scm>
+
+    <dependencies>
+        <dependency>
+            <groupId>velocity</groupId>
+            <artifactId>velocity-dep</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.1-FINAL</version>
+        </dependency>
+    </dependencies>
+  
+</project>
