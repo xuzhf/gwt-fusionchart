@@ -132,6 +132,12 @@ public class Graph extends com.raisepartner.chartfusion.api.StyledChart {
 	public final static String PARAMETER_DECIMALPRECISION = "decimalPrecision";
 	public final static String PARAMETER_LINECOLOR = "lineColor";
     public final static String PARAMETER_ROTATENAMES = "rotateNames";
+    public final static String PARAMETER_NUMVDIVLINES = "numVDivLines";
+    public final static String PARAMETER_SHOWNAMES = "showNames";
+    public final static String PARAMETER_LINETHICKNESS = "lineThickness";
+    public final static String PARAMETER_DIVLINEDECIMALPRECISION = "divLineDecimalPrecision";
+    public final static String PARAMETER_LIMITSDECIMALPRECISION = "limitsDecimalPrecision";
+
 
     public Graph() {
 		super("graph");
@@ -1368,4 +1374,60 @@ public class Graph extends com.raisepartner.chartfusion.api.StyledChart {
 	public void setRotateNames(String value) {
 		setAttribute(PARAMETER_ROTATENAMES, value);
 	}
+
+    /**
+	 * Type: Number
+	 * Range value: Numeric Value
+	 * Description :
+	 * Number of vertical dividing lines to display.
+	 */
+	public void setNumVDivLines(String value) {
+		setAttribute(PARAMETER_NUMVDIVLINES, value);
+	}
+
+    /**
+	 * Type: Number
+	 * Range value: 1/0
+	 * Description :
+     * It sets the configuration whether the x-axis values
+     * (for the data sets) will be displayed or not. By default
+     * this attribute assumes the value 1, which means that
+     * the x-axis names will be displayed.
+	 */
+	public void setShowNames(String value) {
+		setAttribute(PARAMETER_SHOWNAMES, value);
+	}
+
+    /**
+	 * Type: Number
+	 * Range value: 1/0
+	 * Description :
+     * Thickness (in pixels) of the grid line.
+	 */
+	public void setLineThickness(String value) {
+		setAttribute(PARAMETER_LINETHICKNESS, value);
+	}
+
+    /**
+         * Type: Number
+         * Range value:
+         * Description :
+         * Number of decimal places to which all divisional
+         * line (horizontal) values on the chart would be rounded to.
+         */
+        public void setDivLineDecimalPrecision(String value) {
+            setAttribute(PARAMETER_DIVLINEDECIMALPRECISION, value);
+        }
+
+        /**
+         * Type: Number
+         * Range value:
+         * Description :
+         * Number of decimal places to which upper and lower
+         * limit values on the chart would be rounded to.
+         */
+        public void setLimitsDecimalPrecision(String value) {
+            setAttribute(PARAMETER_LIMITSDECIMALPRECISION, value);
+        }
+
 }
