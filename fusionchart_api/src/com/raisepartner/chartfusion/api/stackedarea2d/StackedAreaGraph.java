@@ -22,14 +22,14 @@
  */
 package com.raisepartner.chartfusion.api.stackedarea2d;
 
-public class Graph extends com.raisepartner.chartfusion.api.Graph {
+public class StackedAreaGraph extends com.raisepartner.chartfusion.api.Graph {
 
     public final static String PARAMETER_SHOWGRIDBG = "showgridbg";
     public final static String PARAMETER_AREAALPHA = "areaAlpha";
     public final static String PARAMETER_SHOWAREABORDER = "showAreaBorder";
 
 
-    public Graph() {
+    public StackedAreaGraph() {
 		super();
 	}
 
