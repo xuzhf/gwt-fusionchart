@@ -3,7 +3,7 @@
     <parent>
         <groupId>com.google.code</groupId>
         <artifactId>fusionchart_parent</artifactId>
-        <version>1.0.4-SNAPSHOT</version>
+        <version>1.0.4</version>
     </parent>
     <artifactId>fusionchart_api</artifactId>
     <packaging>jar</packaging>
@@ -13,7 +13,7 @@
     </description>
 
     <scm>
-        <connection>scm:svn:https://gwt-fusionchart.googlecode.com/svn/trunk/fusionchart_api</connection>
+        <connection>scm:svn:https://gwt-fusionchart.googlecode.com/svn/tags/fusionchart_parent-1.0.4/fusionchart_api</connection>
     </scm>
 
     <dependencies>

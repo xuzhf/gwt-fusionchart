@@ -3,14 +3,14 @@
     <groupId>com.google.code</groupId>
     <artifactId>fusionchart_parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.4-SNAPSHOT</version>
+    <version>1.0.4</version>
     <name>Fusion Chart</name>
     <url>http://code.google.com/p/gwt-fusionchart/</url>
     <description>his project provides a set of tools for using the FusionChart? product inside a GWT application.
     </description>
 
     <scm>
-        <connection>scm:svn:https://gwt-fusionchart.googlecode.com/svn/trunk</connection>
+        <connection>scm:svn:https://gwt-fusionchart.googlecode.com/svn/tags/fusionchart_parent-1.0.4</connection>
     </scm>
 
     <repositories>
