@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="fusionchart_api" default="all" basedir=".">
+	<property name="version" value="1.0"/>
+		
+	<target name="clean">
+		<delete dir="output"/>
+	</target>
+		
+	<target name="compile">
+		<mkdir dir="output/build"/>
+		<javac srcdir="src" destdir="output/build" debug="on" includes="**/*.java">
+			<classpath>
+				<pathelement location="lib/velocity-dep.jar"/>
+				<pathelement location="lib/poi.jar"/>
+			</classpath>
+		</javac>
+	</target>
+	<target name="analyze" depends="compile">
+		<mkdir dir="output/generation"/>
+		<java classname="com.raisepartner.chartfusion.analyzer.Analyzer" 
+			newenvironment="yes" fork="yes" maxmemory="250m">
+			<classpath>
+				<pathelement location="src"/>
+				<pathelement location="output/build"/>
+				<pathelement location="lib/velocity-dep.jar"/>
+				<pathelement location="lib/poi.jar"/>
+			</classpath>
+			<arg value="src/com/raisepartner/chartfusion/metadata"/>
+		</java>
+	</target>
+	<target name="generate" depends="compile">
+		<java classname="com.raisepartner.chartfusion.generator.JAPIGenerator" 
+			newenvironment="yes" fork="yes" maxmemory="250m">
+			<classpath>
+				<pathelement location="src"/>
+				<pathelement location="output/build"/>
+				<pathelement location="lib/velocity-dep.jar"/>
+				<pathelement location="lib/poi.jar"/>
+			</classpath>
+			<arg value="etc"/>
+			<arg value="./output/generation"/>
+		</java>
+		<javac srcdir="output/generation" destdir="output/generation" debug="on" includes="**/*.java">
+			<classpath>
+				<pathelement location="output/build"/>
+				<pathelement location="lib/velocity-dep.jar"/>
+				<pathelement location="lib/poi.jar"/>
+			</classpath>
+		</javac>
+	</target>
+	<target name="jar" depends="generate">
+		<jar jarfile="output/fusionchart_api_${version}.jar" 
+            	basedir="output/build"
+            	includes="**/*.class">
+            <fileset dir="output/generation" includes="**"/>
+            <fileset dir="src" includes="**/api/*.java"/>
+            <fileset dir="src" includes="**/api/styles/*.java"/>
+            <fileset dir="src" includes="com/raisepartner/chartfusion/web/**"/>
+        </jar>
+	</target>
+	<target name="zip">
+		<mkdir dir="output"/>
+		<zip zipFile="output/fusionchart_api_${version}.zip"
+            		basedir="${basedir}" excludes="**">
+            		<zipfileset dir="${basedir}" prefix="fusionchart_api"
+				includes="**/*" excludes="output/**"/>
+        	</zip>
+	</target>
+	<target name="all" depends="jar, zip"/>
+</project>
