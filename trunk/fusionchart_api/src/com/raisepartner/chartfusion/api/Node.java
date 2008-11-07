@@ -79,11 +79,12 @@ public class Node {
     /**
      * Builds the XML representation of the node.
      */
+	@Override
 	public String toString() {
 		return toString(new StringBuffer(), "").toString(); 
 	}
     /**
-     * Recursives method for building XML representation of the node
+     * Recursive method building XML representation of the node
      * @param sb is the StringBuffer to fill with the representation of the 
      * current node. Must not be null.
      * @param tab is the tabulation prefix to insert at each line begin. Must 
@@ -96,7 +97,7 @@ public class Node {
 		for (Entry<Object, Object> me : attributes.entrySet()) {
 			if (me.getValue() != null) {
 				sb.append(" ").append((String) me.getKey());
-				sb.append("='").append((String) me.getValue()).append("'");
+				sb.append("='").append(encodeAttribute((String) me.getValue())).append("'");
 			}
 		}
 		if (attributes.size() == 0) {
@@ -114,4 +115,14 @@ public class Node {
 		}
 		return sb;
 	}
+	
+	/**
+	 * Encode an attribute's value so that the XML is well-formed (avoid quotes for instance)
+	 * @param attributeValue
+	 * @return
+	 */
+	private String encodeAttribute(String attributeValue) {
+		return attributeValue.replaceAll("'", "&apos;");
+	}
+	
 }
