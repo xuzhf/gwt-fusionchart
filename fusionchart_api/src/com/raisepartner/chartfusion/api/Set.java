@@ -26,8 +26,10 @@ public class Set extends com.raisepartner.chartfusion.api.Node {
 
 	public final static String PARAMETER_TOOLTEXT = "toolText";
 	public final static String PARAMETER_LINK = "link";
+	public final static String PARAMETER_VALUE = "value";
 
-	public Set() {
+
+    public Set() {
 		super("set");
 	}
 
@@ -58,5 +60,15 @@ public class Set extends com.raisepartner.chartfusion.api.Node {
 	 */
 	public void setLink(String value) {
 		setAttribute(PARAMETER_LINK, value);
+	}
+
+    /**
+	 * Type: Number
+	 * Range value:
+	 * Description :
+	 * Numerical value for the data item. This value would be plotted on the chart.
+	 */
+	public void setValue(String value) {
+		setAttribute(PARAMETER_VALUE, value);
 	}
 }
