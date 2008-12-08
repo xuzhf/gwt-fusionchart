@@ -105,4 +105,12 @@ public class StyledChart extends Node {
 		this.styles.getApplications().applyStyles(toObject, styles);
 	}
 
+    public String getDataUrl() {
+        return this.toString();
+    }
+
+    public String getDataXMl() {
+        String xml = this.toString();
+        return xml.replaceAll("&", "%26");
+    }
 }
