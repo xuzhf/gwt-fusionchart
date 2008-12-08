@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><metadata>
+  <groupId>com.google.code</groupId>
+  <artifactId>fusionchart_server</artifactId>
+  <version>1.0.6-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20081208.235619</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20081208235849</lastUpdated>
+  </versioning>
+</metadata>
