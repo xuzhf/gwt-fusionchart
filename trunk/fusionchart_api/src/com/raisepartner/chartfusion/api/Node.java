@@ -77,6 +77,23 @@ public class Node {
 	}
 
     /**
+     * Build the xml using the default representation of the node.
+     * @see #toString
+     */
+    public String getDataUrl() {
+        return this.toString();
+    }
+
+    /**
+     * Replaces all <i>&amp;</i> with <i>%26</i>, in order to be
+     * compatable with the <i>setDataXml</i> function in the FusionCharts.js.
+     */
+    public String getDataXMl() {
+        String xml = this.toString();
+        return xml.replaceAll("&", "%26");
+    }
+
+    /**
      * Builds the XML representation of the node.
      */
 	@Override
@@ -124,5 +141,4 @@ public class Node {
 	private String encodeAttribute(String attributeValue) {
 		return attributeValue.replaceAll("'", "&apos;");
 	}
-	
 }
