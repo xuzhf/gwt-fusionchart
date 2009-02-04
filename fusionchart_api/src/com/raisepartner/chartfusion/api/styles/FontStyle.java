@@ -64,7 +64,7 @@ public final class FontStyle extends Style {
 	 * Helps you set whether the text should be rendered as HTML or plain text.
 	 */
 	public void setIsHTML(boolean value) {
-		setAttribute(PARAMETER_bold, value ? "1" : "0");
+		setAttribute(PARAMETER_isHTML, value ? "1" : "0");
 	}
 	/**
 	 * Flag indicating whether font should be italics or not
