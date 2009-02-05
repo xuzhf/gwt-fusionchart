@@ -53,7 +53,7 @@ public class VelocityHelper extends Logger {
 
     public VelocityEngine velocityEngine = null;
     
-    public List VMs = new ArrayList();
+    public List<String> VMs = new ArrayList<String>();
     
     public void initVelocityEngine() throws Exception {
         if (velocityEngine == null) {

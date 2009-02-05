@@ -41,7 +41,7 @@ import java.util.Map;
 
 public class XLSParser extends Logger {
 
-    public Map parseFiles(File dir) throws Exception {
+    public Map<String, MetaNode> parseFiles(File dir) throws Exception {
         File[] xlsFiles = dir.listFiles(new FilenameFilter() {
             public boolean accept(File d, String name) {
                 return name.endsWith(".xls");
@@ -49,9 +49,9 @@ public class XLSParser extends Logger {
         });
         if (xlsFiles == null) {
             System.err.println("No Xls file found in '" + dir.getAbsolutePath() + "'.");
-            return Collections.EMPTY_MAP;
+            return Collections.<String, MetaNode>emptyMap();
         } else {
-            Map rootnodes = new HashMap();
+            Map<String, MetaNode> rootnodes = new HashMap<String, MetaNode>();
             for (int i = 0; i < xlsFiles.length; i++) {
                 String fn = xlsFiles[i].getName(); 
                 String chartName = fn.substring(0, fn.length() - 4);
@@ -66,7 +66,7 @@ public class XLSParser extends Logger {
         debug("Parsing '" + file.getAbsolutePath() + "' ...");
 		InputStream in = new FileInputStream(file);
 		HSSFWorkbook wb = new HSSFWorkbook(new POIFSFileSystem(in));
-		Map nodeName2MetaNode = new HashMap();
+		Map<String, MetaNode> nodeName2MetaNode = new HashMap<String, MetaNode>();
 		try {
 			parseAttribute(wb.getSheetAt(0), nodeName2MetaNode);
 			return parseNode(wb.getSheetAt(1), nodeName2MetaNode);
@@ -80,7 +80,7 @@ public class XLSParser extends Logger {
 		}
 	}
 	
-	private void parseAttribute(HSSFSheet sheet, Map nodeName2MetaNode) throws Exception {
+	private void parseAttribute(HSSFSheet sheet, Map<String, MetaNode> nodeName2MetaNode) throws Exception {
 		int idx = 1;
 		while (true) {
 			HSSFRow row = sheet.getRow(idx);
@@ -105,7 +105,7 @@ public class XLSParser extends Logger {
 			idx ++;
 		}
 	}
-	private MetaNode parseNode(HSSFSheet sheet, Map nodeName2MetaNode) {
+	private MetaNode parseNode(HSSFSheet sheet, Map<String, MetaNode> nodeName2MetaNode) {
 		int idx = 1;
 		MetaNode rootNode = null;
 		while (true) {
@@ -127,7 +127,7 @@ public class XLSParser extends Logger {
 			idx ++;
 		}
 	}
-	private MetaNode getMetaNode(String nodeName, Map nodeName2MetaNode) {
+	private MetaNode getMetaNode(String nodeName, Map<String, MetaNode> nodeName2MetaNode) {
 		MetaNode n = (MetaNode) nodeName2MetaNode.get(nodeName);
 		if (n == null) {
 			n = new MetaNode(nodeName);
