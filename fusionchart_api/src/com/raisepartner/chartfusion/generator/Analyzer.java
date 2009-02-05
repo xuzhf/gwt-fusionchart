@@ -22,19 +22,18 @@
  */
 package com.raisepartner.chartfusion.generator;
 
-import com.raisepartner.chartfusion.generator.metadata.MetaAttribute;
-import com.raisepartner.chartfusion.generator.metadata.MetaNode;
-import com.raisepartner.chartfusion.generator.metadata.NodeOfChart;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
+
+import com.raisepartner.chartfusion.generator.metadata.MetaAttribute;
+import com.raisepartner.chartfusion.generator.metadata.MetaNode;
+import com.raisepartner.chartfusion.generator.metadata.NodeOfChart;
 
 /**
  * Analyzes nodes hierachies in order to extract common attributes.
@@ -50,6 +49,7 @@ public class Analyzer extends Logger {
         } else {
             xlsDir = args[0];
         }
+        Logger.out = System.out;
         new Analyzer().findCommonAttributes(new XLSParser().parseFiles(new File(xlsDir)));
     }
     
