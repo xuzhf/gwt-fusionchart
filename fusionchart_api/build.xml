@@ -17,7 +17,7 @@
 	</target>
 	<target name="analyze" depends="compile">
 		<mkdir dir="output/generation"/>
-		<java classname="com.raisepartner.chartfusion.analyzer.Analyzer" 
+		<java classname="com.raisepartner.chartfusion.generator.Analyzer" 
 			newenvironment="yes" fork="yes" maxmemory="250m">
 			<classpath>
 				<pathelement location="src"/>
@@ -25,7 +25,7 @@
 				<pathelement location="lib/velocity-dep.jar"/>
 				<pathelement location="lib/poi.jar"/>
 			</classpath>
-			<arg value="src/com/raisepartner/chartfusion/metadata"/>
+			<arg value="etc"/>
 		</java>
 	</target>
 	<target name="generate" depends="compile">
