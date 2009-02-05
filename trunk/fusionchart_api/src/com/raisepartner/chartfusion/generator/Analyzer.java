@@ -34,6 +34,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 /**
  * Analyzes nodes hierachies in order to extract common attributes.
@@ -58,50 +59,47 @@ public class Analyzer extends Logger {
      * @return a map (node Name, Set(MetaAttribute))
      * @throws Exception
      */
-    public Map findCommonAttributes(Map chartName2rootNode) throws Exception {
+    public Map<String,Set<MetaAttribute>> findCommonAttributes(Map<String,MetaNode> chartName2rootNode) throws Exception {
         //format data
-        HashMap nodeName2nocs = new HashMap();
-        for (Iterator itChart = chartName2rootNode.entrySet().iterator(); itChart.hasNext();) {
-            Map.Entry me = (Map.Entry) itChart.next();
-            String chartName = (String) me.getKey();
-            MetaNode rootNode = (MetaNode) me.getValue();
+        HashMap<String,List<NodeOfChart>> nodeName2nocs = new HashMap<String,List<NodeOfChart>>();
+        for (Entry<String,MetaNode> me : chartName2rootNode.entrySet()) {
+            String chartName = me.getKey();
+            MetaNode rootNode = me.getValue();
             debug(rootNode.toString());
-            Set nodes = rootNode.getAllNodes();
-            for (Iterator it = nodes.iterator(); it.hasNext();) {
-                MetaNode mn = (MetaNode) it.next();
+            Set<MetaNode> nodes = rootNode.getAllNodes();
+            for (MetaNode mn : nodes) {
                 NodeOfChart noc = new NodeOfChart(mn, chartName);
-                List nocs = (List) nodeName2nocs.get(mn.nodeName);
+                List<NodeOfChart> nocs = nodeName2nocs.get(mn.nodeName);
                 if (nocs == null) {
-                    nocs = new ArrayList();
+                    nocs = new ArrayList<NodeOfChart>();
                     nodeName2nocs.put(mn.nodeName, nocs);
                 }
                 nocs.add(noc);
             }
         }
         //analyze
-        Map nodeName2commonAttributes = new HashMap();
-        for (Iterator it = nodeName2nocs.values().iterator(); it.hasNext();) {
-            List nocs = (List) it.next();
+        Map<String,Set<MetaAttribute>> nodeName2commonAttributes = new HashMap<String,Set<MetaAttribute>>();
+        for (List<NodeOfChart> nocs : nodeName2nocs.values()) {
             analyzeNOCS(nocs, nodeName2commonAttributes);
         }
         return nodeName2commonAttributes;
     }
 
-    private void analyzeNOCS(List nocs, Map nodeName2commonAttributes) {
+    private void analyzeNOCS(List<NodeOfChart> nocs, Map<String,Set<MetaAttribute>> nodeName2commonAttributes) {
 
     	if (nocs.size() < 2) {
             return;
         }
-        Set commonAttributes = new HashSet();
-        Set commonSubNodes = new HashSet();
+        Set<MetaAttribute> commonAttributes = new HashSet<MetaAttribute>();
+        Set<MetaNode> commonSubNodes = new HashSet<MetaNode>();
         //Take all attributes of the first
         NodeOfChart noc = (NodeOfChart) nocs.get(0);
         debug("* Analyzing node '" + noc.node.nodeName + "': ");
-        Set subNodeNames = getNodeNames(noc.node.subnodes);
-        debugCommons(noc, commonSubNodes);
+        Set<String> subNodeNames = getNodeNames(noc.node.subnodes);
+        debugCommons(noc, subNodeNames);
         commonAttributes.addAll(noc.node.attributes);
         commonSubNodes.retainAll(subNodeNames);
-        //Keep common attribtes with the rest
+        //Keep common attributes with the rest
         for (int i = 1; i < nocs.size(); i++) {
             noc = (NodeOfChart) nocs.get(i);
             subNodeNames = getNodeNames(noc.node.subnodes);
@@ -116,8 +114,7 @@ public class Analyzer extends Logger {
         if (!commonAttributes.isEmpty()) {
             nodeName2commonAttributes.put(noc.node.nodeName, commonAttributes);
             debug("* Common attributes between the nodes '" + noc.node.nodeName + "': ");
-            for (Iterator it = commonAttributes.iterator(); it.hasNext();) {
-                MetaAttribute ma = (MetaAttribute) it.next();
+            for (MetaAttribute ma : commonAttributes) {
                 debug("\t\t-" + ma.name);
             }
         } else {
@@ -125,8 +122,8 @@ public class Analyzer extends Logger {
         }
         if (!commonSubNodes.isEmpty()) {
             debug("* Common sub nodes between the nodes '" + noc.node.nodeName + "': ");
-            for (Iterator it = commonSubNodes.iterator(); it.hasNext();) {
-                debug("\t\t-" + it.next());
+            for (MetaNode mn : commonSubNodes) {
+                debug("\t\t-" + mn);
             }
         } else {
             debug("* No common sub nodes between the nodes '" + noc.node.nodeName + "': ");
@@ -134,25 +131,23 @@ public class Analyzer extends Logger {
     }
 
     private void debugCommons(NodeOfChart noc, 
-            Set subNodeNames) {
+            Set<String> subNodeNames) {
         if (debug) {
             debug("\t-'" + noc.node.nodeName + "' is used in chart '" + noc.chartName + "'.");
             debug("\t  it has " +  noc.node.attributes.size() + " attribute(s)");
-            for (Iterator it2 = noc.node.attributes.iterator(); it2.hasNext();) {
-                MetaAttribute ma = (MetaAttribute) it2.next();
+            for (MetaAttribute ma : noc.node.attributes) {
                 debug("\t\t-" + ma.name);
             }
             debug("\t  it has " +  subNodeNames.size() + " sub node(s)");
-            for (Iterator it2 = subNodeNames.iterator(); it2.hasNext();) {
-                debug("\t\t-" +  it2.next());
+            for (String name : subNodeNames) {
+                debug("\t\t-" +  name);
             }
         }
     }
 
-    private Set getNodeNames(List nodes) {
-        HashSet res = new HashSet();
-        for (Iterator iter = nodes.iterator(); iter.hasNext();) {
-            MetaNode node = (MetaNode) iter.next();
+    private Set<String> getNodeNames(List<MetaNode> nodes) {
+        HashSet<String> res = new HashSet<String>();
+        for (MetaNode node : nodes) {
             res.add(node.nodeName);
         }
         return res;

@@ -22,31 +22,30 @@
  */
 package com.raisepartner.chartfusion.generator.metadata;
 
-import com.raisepartner.chartfusion.generator.StringUtils;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.raisepartner.chartfusion.generator.StringUtils;
+
 public class MetaNode {
 
 	public String nodeName;
-	public List attributes = new ArrayList();
-	public List subnodes = new ArrayList();
+	public List<MetaAttribute> attributes = new ArrayList<MetaAttribute>();
+	public List<MetaNode> subnodes = new ArrayList<MetaNode>();
 	
 	public MetaNode(String n) {
 		nodeName = n;
 	}
 
-	public List getAttributes() {
+	public List<MetaAttribute> getAttributes() {
 		return attributes;
 	}
 
-	public void setAttributes(List attributes) {
+	public void setAttributes(List<MetaAttribute> attributes) {
 		this.attributes = attributes;
 	}
 
@@ -58,11 +57,11 @@ public class MetaNode {
 		this.nodeName = nodeName;
 	}
 
-	public List getSubnodes() {
+	public List<MetaNode> getSubnodes() {
 		return subnodes;
 	}
 
-	public void setSubnodes(List subnodes) {
+	public void setSubnodes(List<MetaNode> subnodes) {
 		this.subnodes = subnodes;
 	}
 	
@@ -72,13 +71,13 @@ public class MetaNode {
 	public String getUpperNodeName() {
 		return nodeName.toUpperCase();
 	}
-    public Set getAllNodes() {
-        HashSet s = new HashSet();
+    public Set<MetaNode> getAllNodes() {
+        HashSet<MetaNode> s = new HashSet<MetaNode>();
         getNodes(this, s);
         return s;
     }
-    public Map getAllNodesByName() {
-        HashMap m = new HashMap();
+    public Map<String,MetaNode> getAllNodesByName() {
+        HashMap<String,MetaNode> m = new HashMap<String,MetaNode>();
         getNodes(this, m);
         return m;
     }
@@ -112,19 +111,17 @@ public class MetaNode {
     	return true;
     }
     
-    private static void getNodes(MetaNode n, Map m) {
+    private static void getNodes(MetaNode n, Map<String, MetaNode> m) {
         m.put(n.nodeName, n);
-        for (Iterator it = n.subnodes.iterator(); it.hasNext();) {
-        	MetaNode sn = (MetaNode) it.next();
+        for (MetaNode sn : n.subnodes) {
         	if (sn != n) {
         		getNodes(sn, m);
         	}
         }
     }
-    private static void getNodes(MetaNode n, Set s) {
+    private static void getNodes(MetaNode n, Set<MetaNode> s) {
         s.add(n);
-        for (Iterator it = n.subnodes.iterator(); it.hasNext();) {
-        	MetaNode sn = (MetaNode) it.next();
+        for (MetaNode sn : n.subnodes) {
         	if (sn != n) {
         		getNodes(sn, s);
         	}
@@ -147,16 +144,14 @@ public class MetaNode {
     private StringBuffer toString(StringBuffer sb, String tab) {
         final String innerTab = tab + "\t";
         sb.append(tab).append("<").append(nodeName);
-        for (Iterator it = attributes.iterator(); it.hasNext();) {
-            MetaAttribute ma = (MetaAttribute) it.next();
+        for (MetaAttribute ma : attributes) {
             sb.append(" ").append(ma.getName());
         }
         if (subnodes.isEmpty()) {
             sb.append("/>\n");
         } else {
             sb.append(">\n");
-            for (Iterator it = subnodes.iterator(); it.hasNext();) {
-                MetaNode n = (MetaNode) it.next();
+            for (MetaNode n : subnodes) {
                 if (n != this) {
                 	n.toString(sb, innerTab);
                 }

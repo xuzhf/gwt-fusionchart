@@ -34,10 +34,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 /**
  * Generates Java API for building chart with fusionchart product. 
@@ -78,47 +79,46 @@ public class JAPIGenerator extends VelocityHelper {
     
     public void generate(File xlsDir, File outDir) throws Exception {
         XLSParser parser = new XLSParser();
-        Map chartName2rootNode = parser.parseFiles(xlsDir);
+        Map<String, MetaNode> chartName2rootNode = parser.parseFiles(xlsDir);
         if (chartName2rootNode.isEmpty()) {
             return;
         }
         //find common attributes between nodes
-        Map nodeName2commonAttributes = new Analyzer().findCommonAttributes(chartName2rootNode);
+        Map<String,Set<MetaAttribute>> nodeName2commonAttributes = new Analyzer().findCommonAttributes(chartName2rootNode);
         //Build class descriptors
-        List classDescs = computeClassDescriptor(chartName2rootNode, nodeName2commonAttributes);
+        List<ClassDesc> classDescs = computeClassDescriptor(chartName2rootNode, nodeName2commonAttributes);
         //generate
-        List l = new ArrayList(chartName2rootNode.keySet());
+        List<String> l = new ArrayList<String>(chartName2rootNode.keySet());
         Collections.sort(l);
         info("JAPIGenerator is generating " + classDescs.size() + " classes for chart " + l + ".");
         final String template = "node.vm";
-        for (Iterator it = classDescs.iterator(); it.hasNext();) {
-            generateFile(outDir, (ClassDesc) it.next(), template);
+        for (ClassDesc cd : classDescs) {
+            generateFile(outDir, cd, template);
         }
         generateList(chartName2rootNode, outDir);
         info("JAPIGenerator: Done.");
     }
 
-    private void generateList(Map chartName2rootNode, File outDir) throws Exception {
+    private void generateList(Map<String,MetaNode> chartName2rootNode, File outDir) throws Exception {
     	ClassDesc cd = new ClassDesc();
     	cd.packageName = "com.raisepartner.chartfusion.web.client";
     	cd.className = "FusionChartList";
-    	List attributes = new ArrayList();
-    	for (Iterator it = chartName2rootNode.keySet().iterator(); it.hasNext();) {
-    		attributes.add(new MetaAttribute((String) it.next()));
+    	List<MetaAttribute> attributes = new ArrayList<MetaAttribute>();
+    	for (String name : chartName2rootNode.keySet()) {
+    		attributes.add(new MetaAttribute(name));
 		}
-    	cd.setAttributes(attributes);
+    	cd.attributes = attributes;
         generateFile(outDir, cd, "FusionChartList.vm");
     }
     
-    private List computeClassDescriptor(Map chartName2rootNode, 
-            Map nodeName2commonAttributes) {
-        List classDescs = new ArrayList();
+    private List<ClassDesc> computeClassDescriptor(Map<String, MetaNode> chartName2rootNode, 
+    		Map<String,Set<MetaAttribute>> nodeName2commonAttributes) {
+        List<ClassDesc> classDescs = new ArrayList<ClassDesc>();
         //Common classes between chart
         final String apiPackageName = Node.class.getPackage().getName();
-        for (Iterator it = nodeName2commonAttributes.entrySet().iterator(); it.hasNext();) {
-            Map.Entry me = (Map.Entry) it.next();
-            String nodeName = (String) me.getKey();
-            Set commonAttributes = (Set) me.getValue();
+        for (Entry<String,Set<MetaAttribute>> me : nodeName2commonAttributes.entrySet()) {
+            String nodeName = me.getKey();
+            Set<MetaAttribute> commonAttributes = me.getValue();
             ClassDesc cd = new ClassDesc();
             cd.packageName = apiPackageName;
             cd.className = StringUtils.firstLetterUpper(nodeName);
@@ -128,17 +128,15 @@ public class JAPIGenerator extends VelocityHelper {
             	cd.superType = Node.class.getName();
             }
             cd.nodeName = nodeName;
-            cd.attributes = new ArrayList(commonAttributes);
-            cd.subnodes = Collections.EMPTY_LIST;
+            cd.attributes = new ArrayList<MetaAttribute>(commonAttributes);
+            cd.subnodes = Collections.<MetaNode>emptyList();
             classDescs.add(cd);
         }
         //classes for each chart type
-        for (Iterator it = chartName2rootNode.entrySet().iterator(); it.hasNext();) {
-            Map.Entry me = (Map.Entry) it.next();
-            String chartName = (String) me.getKey();
-            MetaNode rootNode = (MetaNode) me.getValue();
-            for (Iterator itNode = rootNode.getAllNodes().iterator(); itNode.hasNext();) {
-                MetaNode node = (MetaNode) itNode.next();
+        for (Entry<String, MetaNode> me : chartName2rootNode.entrySet()) {
+            String chartName = me.getKey();
+            MetaNode rootNode = me.getValue();
+            for (MetaNode node : rootNode.getAllNodes()) {
                 ClassDesc cd = new ClassDesc();
                 cd.packageName = apiPackageName + "." + chartName.toLowerCase();
                 if (node == rootNode) {
@@ -146,7 +144,7 @@ public class JAPIGenerator extends VelocityHelper {
                 } else {
                     cd.className = StringUtils.firstLetterUpper(node.nodeName);
                 }
-                Set commonAttributes = (Set)  nodeName2commonAttributes.get(node.nodeName) ;
+                Set<MetaAttribute> commonAttributes = nodeName2commonAttributes.get(node.nodeName) ;
                 if (commonAttributes == null) {
                     cd.superType = Node.class.getName();
                     cd.attributes = node.attributes;
@@ -154,7 +152,7 @@ public class JAPIGenerator extends VelocityHelper {
                 } else {
                     cd.nodeName = null;
                     cd.superType = apiPackageName + "." + StringUtils.firstLetterUpper(node.nodeName);
-                    cd.attributes = new ArrayList(node.attributes);
+                    cd.attributes = new ArrayList<MetaAttribute>(node.attributes);
                     cd.attributes.removeAll(commonAttributes);
                 }
                 cd.subnodes = node.subnodes;
@@ -167,6 +165,20 @@ public class JAPIGenerator extends VelocityHelper {
     
     private void generateFile(File outDir, ClassDesc cd, String templateName) throws Exception {
         Context ctx = new VelocityContext();
+        if (cd.attributes != null) {
+	        Collections.sort(cd.attributes, new Comparator<MetaAttribute>(){
+	        	public int compare(MetaAttribute o1, MetaAttribute o2) {
+	        		return o1.name.compareTo(o2.name);
+	        	}
+	        });
+        }
+        if (cd.subnodes != null) {
+		    Collections.sort(cd.subnodes, new Comparator<MetaNode>(){
+		    	public int compare(MetaNode o1, MetaNode o2) {
+		    		return o1.nodeName.compareTo(o2.nodeName);
+		    	}
+		    });
+        }
         ctx.put("cd", cd);
         File f = new File(outDir, cd.packageName.replace('.', '/')+ "/" + cd.className + ".java");
         f.getParentFile().mkdirs();

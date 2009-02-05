@@ -50,7 +50,7 @@ ${att.get70WrappedDescription()}
      * @see ${cd.packageName}.${sn.getFirstUpperNodeName()}
      */
     public ${sn.getFirstUpperNodeName()} create${sn.getFirstUpperNodeName()}Node() {
-            ${sn.getFirstUpperNodeName()} node = new ${sn.getFirstUpperNodeName()}();
+        ${sn.getFirstUpperNodeName()} node = new ${sn.getFirstUpperNodeName()}();
         addNode(node);
         return node;
     }

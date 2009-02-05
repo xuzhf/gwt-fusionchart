@@ -24,6 +24,9 @@ package com.raisepartner.chartfusion.generator;
 
 import java.util.List;
 
+import com.raisepartner.chartfusion.generator.metadata.MetaAttribute;
+import com.raisepartner.chartfusion.generator.metadata.MetaNode;
+
 public class ClassDesc {
 
     public String className;
@@ -34,20 +37,20 @@ public class ClassDesc {
     /**
      * List of MetaAttribute instances
      */
-    public List attributes;
+    public List<MetaAttribute> attributes;
     /**
      * List of ClassDesc
      */
-    public List subnodes;
+    public List<MetaNode> subnodes;
     
     public boolean hasNodeName() {
         return nodeName != null;
     }
     
-    public List getAttributes() {
+    public List<MetaAttribute> getAttributes() {
         return attributes;
     }
-    public void setAttributes(List attributes) {
+    public void setAttributes(List<MetaAttribute> attributes) {
         this.attributes = attributes;
     }
     public String getClassName() {
@@ -68,10 +71,10 @@ public class ClassDesc {
     public void setPackageName(String packageName) {
         this.packageName = packageName;
     }
-    public List getSubnodes() {
+    public List<MetaNode> getSubnodes() {
         return subnodes;
     }
-    public void setSubnodes(List subnodes) {
+    public void setSubnodes(List<MetaNode> subnodes) {
         this.subnodes = subnodes;
     }
     public String getSuperType() {
