@@ -46,14 +46,14 @@ ${att.get70WrappedDescription()}
 	}
 #end
 #foreach ($sn in $cd.subnodes)
-        /**
-         * @see ${cd.packageName}.${sn.getFirstUpperNodeName()}
-         */
-        public ${sn.getFirstUpperNodeName()} create${sn.getFirstUpperNodeName()}Node() {
-                ${sn.getFirstUpperNodeName()} node = new ${sn.getFirstUpperNodeName()}();
-		addNode(node);
-		return node;
-        }
+    /**
+     * @see ${cd.packageName}.${sn.getFirstUpperNodeName()}
+     */
+    public ${sn.getFirstUpperNodeName()} create${sn.getFirstUpperNodeName()}Node() {
+            ${sn.getFirstUpperNodeName()} node = new ${sn.getFirstUpperNodeName()}();
+        addNode(node);
+        return node;
+    }
 
 #end
 }
