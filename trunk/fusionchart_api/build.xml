@@ -8,7 +8,7 @@
 		
 	<target name="compile">
 		<mkdir dir="output/build"/>
-		<javac srcdir="src" destdir="output/build" debug="on" includes="**/*.java">
+		<javac srcdir="src" destdir="output/build" debug="on" includes="**/*.java" target="1.5" source="1.5">
 			<classpath>
 				<pathelement location="lib/velocity-dep.jar"/>
 				<pathelement location="lib/poi.jar"/>
@@ -40,7 +40,7 @@
 			<arg value="etc"/>
 			<arg value="./output/generation"/>
 		</java>
-		<javac srcdir="output/generation" destdir="output/generation" debug="on" includes="**/*.java">
+		<javac srcdir="output/generation" destdir="output/generation" debug="on" includes="**/*.java"  target="1.5" source="1.5">
 			<classpath>
 				<pathelement location="output/build"/>
 				<pathelement location="lib/velocity-dep.jar"/>
